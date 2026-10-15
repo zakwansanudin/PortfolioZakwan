@@ -63,6 +63,11 @@ export default function Home() {
           <a className="wordmark" href="#top" aria-label="Zakwan Sanudin home">
             zakwan<span>.</span>
           </a>
+          <div className="arcade-hud" aria-label="Arcade status">
+            <span><small>SCORE</small><b>000000</b></span>
+            <span><small>LEVEL</small><b>01 / 04</b></span>
+            <span className="hud-lives"><small>LIVES</small><b aria-label="three lives">♥ ♥ ♥</b></span>
+          </div>
           <nav className="main-nav" aria-label="Main navigation">
             <a href="#about">About</a>
             <a href="#work">Work</a>
