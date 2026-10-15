@@ -129,7 +129,7 @@ export default function Home() {
                 alt="Portrait of Zakwan Sanudin"
                 fill
                 priority
-                sizes="(max-width: 760px) 240px, 300px"
+                sizes="(max-width: 760px) 170px, 220px"
                 className="portrait-image"
               />
             </div>
