@@ -90,7 +90,7 @@ export default function Home() {
                 alt="Portrait of Zakwan Sanudin"
                 fill
                 priority
-                sizes="(max-width: 760px) 80vw, 400px"
+                sizes="(max-width: 760px) 220px, 280px"
                 className="portrait-image"
               />
             </div>
@@ -116,7 +116,10 @@ export default function Home() {
           <div className="project-list">
             {projects.map((project) => (
               <article className="project-row" key={project.number}>
-                <span className="project-number">{project.number}</span>
+                <div className="project-card-top" aria-hidden="true">
+                  <span className="project-number">{project.number}</span>
+                  <span className="project-card-mark">ZS / WORK</span>
+                </div>
                 <div className="project-main">
                   <div className="project-title-line">
                     <div>
