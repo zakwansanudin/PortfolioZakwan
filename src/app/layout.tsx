@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar"; // Import your Navbar
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Zakwan Portfolio",
-  description: "Welcome to my portfolio",
+  description: "Zakwan Sanudin is a full-stack developer building useful digital products for people and communities.",
 };
 
 export default function RootLayout({
@@ -14,15 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-slate-50">
-        {/* Persistent Navbar */}
-        <Navbar />
-
-        {/* Dynamic page content */}
-        <main className="flex-1">{children}</main>
-        
-        {/* Optional: You can also place a Footer here later */}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
