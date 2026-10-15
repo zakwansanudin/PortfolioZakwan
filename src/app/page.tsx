@@ -17,6 +17,7 @@ const projects = [
       "A digital community management system with real-time announcements, access controls, and tools for keeping local networks connected.",
     tags: ["Laravel", "MySQL", "Bootstrap"],
     href: "https://kampungonline.my",
+    preview: "community",
   },
   {
     number: "02",
@@ -26,6 +27,7 @@ const projects = [
       "A student progress portal for the Program Didik Kasih, used across primary schools in Selangor for tracking grades and reporting.",
     tags: ["Laravel", "Tailwind CSS", "MySQL"],
     href: "https://epdk.eptrs.my/login",
+    preview: "school",
   },
   {
     number: "03",
@@ -35,6 +37,7 @@ const projects = [
       "An interactive learning hub with live quiz sessions, dynamic timetables, and dashboards for monitoring student progress.",
     tags: ["Laravel", "React", "MySQL"],
     href: "https://example.com",
+    preview: "learning",
   },
   {
     number: "04",
@@ -44,8 +47,85 @@ const projects = [
       "A lightweight landing page that helps families learn about an education initiative and sign up to take part.",
     tags: ["HTML", "CSS", "JavaScript"],
     href: "https://example.com",
+    preview: "tutor",
   },
 ];
+
+const previewContent = {
+  community: {
+    name: "KAMPUNG ONLINE",
+    section: "Community overview",
+    stats: [["Members", "2,408"], ["Updates", "18"], ["Groups", "12"]],
+    activity: ["Community notice", "Weekend activities", "Local services"],
+    bars: [36, 56, 44, 78, 58, 88, 68, 100, 76, 91, 65, 82],
+  },
+  school: {
+    name: "ePDK PORTAL",
+    section: "Student progress",
+    stats: [["Students", "1,284"], ["Classes", "42"], ["Reports", "96%"]],
+    activity: ["Bahasa Melayu", "Mathematics", "Science"],
+    bars: [58, 66, 72, 61, 83, 74, 92, 78, 88, 69, 98, 82],
+  },
+  learning: {
+    name: "LEARNING ARENA",
+    section: "Quiz arena",
+    stats: [["Players", "128"], ["Quizzes", "24"], ["Completion", "89%"]],
+    activity: ["Science · Round 4", "History · Round 2", "English · Round 1"],
+    bars: [44, 73, 52, 91, 67, 82, 60, 100, 72, 88, 55, 80],
+  },
+  tutor: {
+    name: "HOMETUTOR",
+    section: "Learning together",
+    stats: [["Learners", "320"], ["Tutors", "46"], ["Sessions", "84"]],
+    activity: ["Find a tutor", "Join a class", "How it works"],
+    bars: [55, 70, 62, 86, 73, 94, 80, 100, 75, 88, 67, 93],
+  },
+};
+
+type PreviewKind = keyof typeof previewContent;
+
+function ProjectPreview({ kind }: { kind: PreviewKind }) {
+  const preview = previewContent[kind];
+
+  return (
+    <div className={`project-preview preview-${kind}`} aria-hidden="true">
+      <div className="preview-browser">
+        <span className="preview-lights"><i /><i /><i /></span>
+        <span className="preview-address">{preview.name.toLowerCase().replaceAll(" ", "-")}.my / dashboard</span>
+        <span className="preview-window-mark">•••</span>
+      </div>
+      <div className="preview-app">
+        <aside className="preview-sidebar">
+          <b>{preview.name.split(" ")[0]}<span>.</span></b>
+          <i className="selected" /><i /><i /><i />
+          <div className="preview-side-avatar" />
+        </aside>
+        <div className="preview-main">
+          <div className="preview-heading">
+            <div><small>OVERVIEW</small><b>{preview.section}</b></div>
+            <span className="preview-date">THIS MONTH⌄</span>
+          </div>
+          <div className="preview-stat-grid">
+            {preview.stats.map(([label, value]) => (
+              <div className="preview-stat" key={label}><small>{label}</small><b>{value}</b><i /></div>
+            ))}
+          </div>
+          <div className="preview-lower-grid">
+            <div className="preview-chart">
+              <div className="preview-panel-heading"><b>Activity</b><small>Last 12 months</small></div>
+              <div className="preview-bars">{preview.bars.map((height, index) => <i key={index} style={{ height: `${height}%` }} />)}</div>
+              <div className="preview-months"><span>JAN</span><span>JUN</span><span>DEC</span></div>
+            </div>
+            <div className="preview-activity">
+              <div className="preview-panel-heading"><b>Recent</b><small>VIEW</small></div>
+              {preview.activity.map((item, index) => <div className="preview-activity-row" key={item}><i>{index + 1}</i><span>{item}</span><b>›</b></div>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -175,6 +255,7 @@ export default function Home() {
           <div className="project-list">
             {projects.map((project) => (
               <article className="project-row" key={project.number}>
+                <ProjectPreview kind={project.preview as PreviewKind} />
                 <div className="project-card-top">
                   <div className="project-top-inner">
                     <span className="project-number">{project.number}</span>
