@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Mail } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Code2, Database, Mail, Server, Smartphone } from "lucide-react";
 
 const skills = [
-  { title: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
-  { title: "Backend",  items: ["PHP", "Laravel", "REST APIs", "Node.js"] },
-  { title: "Data & Tools", items: ["MySQL", "Git", "GitHub"] },
-  { title: "Mobile",   items: ["Flutter", "React Native"] },
+  { title: "Frontend", icon: Code2, items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
+  { title: "Backend", icon: Server, items: ["PHP", "Laravel", "REST APIs", "Node.js"] },
+  { title: "Data & Tools", icon: Database, items: ["MySQL", "Git", "GitHub"] },
+  { title: "Mobile", icon: Smartphone, items: ["Flutter", "React Native"] },
 ];
 
 const projects = [
@@ -137,6 +137,10 @@ export default function Home() {
               <span className="portrait-badge-dot" aria-hidden="true" />
               Available for work
             </div>
+            <div className="stack-note" aria-label="Main technology stack">
+              <span className="stack-note-label">Main stack</span>
+              <span className="stack-note-items"><code>Next.js</code><i /> <code>Laravel</code><i /> <code>MySQL</code></span>
+            </div>
           </div>
         </section>
 
@@ -217,7 +221,7 @@ export default function Home() {
             <div className="skills-grid">
               {skills.map((group) => (
                 <div className="skill-group" key={group.title}>
-                  <h3>{group.title}</h3>
+                  <h3><group.icon size={17} strokeWidth={1.8} aria-hidden="true" />{group.title}</h3>
                   <ul>
                     {group.items.map((item) => (
                       <li key={item}>{item}</li>

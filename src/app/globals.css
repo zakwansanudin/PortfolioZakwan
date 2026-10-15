@@ -368,6 +368,29 @@ body::before {
   flex-shrink: 0;
   box-shadow: 0 0 8px var(--teal);
 }
+.stack-note {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 30px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+}
+.stack-note-label {
+  color: var(--ink-3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.stack-note-items { display: flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.stack-note-items code { font-family: var(--font-mono); font-size: 9px; }
+.stack-note-items i { width: 3px; height: 3px; border-radius: 50%; background: var(--teal); }
 
 /* ─── Intro strip ────────────────────────────────────────────────────── */
 .intro-strip {
@@ -639,6 +662,9 @@ body::before {
 .skill-group:nth-child(4)::before { background: linear-gradient(90deg, #ec4899, #f43665); }
 
 .skill-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 700;
@@ -646,6 +672,7 @@ body::before {
   color: var(--ink);
   margin-bottom: 18px;
 }
+.skill-group h3 svg { color: var(--teal); }
 .skill-group ul {
   display: flex;
   flex-direction: column;
