@@ -147,6 +147,7 @@ export default function Home() {
   useEffect(() => {
     if (!activeProject) return;
 
+    const galleryLength = activeProject.gallery.length;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     closeButtonRef.current?.focus();
@@ -154,10 +155,10 @@ export default function Home() {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") setActiveProject(null);
       if (event.key === "ArrowRight") {
-        setActiveImage((index) => (index + 1) % activeProject.gallery.length);
+        setActiveImage((index) => (index + 1) % galleryLength);
       }
       if (event.key === "ArrowLeft") {
-        setActiveImage((index) => (index - 1 + activeProject.gallery.length) % activeProject.gallery.length);
+        setActiveImage((index) => (index - 1 + galleryLength) % galleryLength);
       }
       if (event.key === "Tab") {
         const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
