@@ -19,7 +19,8 @@ const projects = [
     description:
       "A central platform for managing website pages, services, members, and contact information from one clear dashboard.",
     tags: ["Laravel", "MySQL", "Bootstrap"],
-    preview: "cms",
+    cover: "/images/projects/cms/dashboard_cms.png",
+    previewLabel: "CMS DASHBOARD",
     gallery: [
       { src: "/images/projects/cms/dashboard_cms.png", label: "CMS dashboard" },
       { src: "/images/projects/cms/homepage.png", label: "Homepage management" },
@@ -36,7 +37,8 @@ const projects = [
       "A student progress portal for the Program Didik Kasih, used across primary schools in Selangor for tracking grades and reporting.",
     tags: ["Laravel", "Tailwind CSS", "MySQL"],
     href: "https://epdk.eptrs.my/login",
-    preview: "school",
+    cover: "/images/projects/epdk/dashboard.png",
+    previewLabel: "ePDK DASHBOARD",
     gallery: [
       { src: "/images/projects/epdk/dashboard.png", label: "ePDK dashboard" },
       { src: "/images/projects/epdk/student.png", label: "Student progress" },
@@ -51,7 +53,8 @@ const projects = [
       "A digital community platform with resident services, local updates, and separate dashboards for community leaders and villagers.",
     tags: ["Laravel", "MySQL", "Bootstrap"],
     href: "https://kampungonline.my",
-    preview: "community",
+    cover: "/images/projects/kampungonline/landing.png",
+    previewLabel: "KAMPUNGONLINE HOME",
     gallery: [
       { src: "/images/projects/kampungonline/landing.png", label: "KampungOnline landing page" },
       { src: "/images/projects/kampungonline/login.png", label: "KampungOnline login" },
@@ -61,71 +64,19 @@ const projects = [
   },
 ];
 
-const previewContent = {
-  cms: {
-    name: "CONTENT CMS",
-    section: "Website overview",
-    stats: [["Pages", "24"], ["Services", "08"], ["Members", "56"]],
-    activity: ["Homepage content", "Service details", "Member directory"],
-    bars: [36, 56, 44, 78, 58, 88, 68, 100, 76, 91, 65, 82],
-  },
-  community: {
-    name: "KAMPUNG ONLINE",
-    section: "Community overview",
-    stats: [["Members", "2,408"], ["Updates", "18"], ["Groups", "12"]],
-    activity: ["Community notice", "Weekend activities", "Local services"],
-    bars: [36, 56, 44, 78, 58, 88, 68, 100, 76, 91, 65, 82],
-  },
-  school: {
-    name: "ePDK PORTAL",
-    section: "Student progress",
-    stats: [["Students", "1,284"], ["Classes", "42"], ["Reports", "96%"]],
-    activity: ["Bahasa Melayu", "Mathematics", "Science"],
-    bars: [58, 66, 72, 61, 83, 74, 92, 78, 88, 69, 98, 82],
-  },
-};
-
-type PreviewKind = keyof typeof previewContent;
 type Project = (typeof projects)[number];
 
-function ProjectPreview({ kind }: { kind: PreviewKind }) {
-  const preview = previewContent[kind];
-
+function ProjectPreview({ src, label }: { src: string; label: string }) {
   return (
-    <div className={`project-preview preview-${kind}`} aria-hidden="true">
+    <div className="project-preview" aria-hidden="true">
       <div className="preview-browser">
         <span className="preview-lights"><i /><i /><i /></span>
-        <span className="preview-address">{preview.name.toLowerCase().replaceAll(" ", "-")}.my / dashboard</span>
+        <span className="preview-address">SYSTEM PREVIEW</span>
         <span className="preview-window-mark">•••</span>
       </div>
-      <div className="preview-app">
-        <aside className="preview-sidebar">
-          <b>{preview.name.split(" ")[0]}<span>.</span></b>
-          <i className="selected" /><i /><i /><i />
-          <div className="preview-side-avatar" />
-        </aside>
-        <div className="preview-main">
-          <div className="preview-heading">
-            <div><small>OVERVIEW</small><b>{preview.section}</b></div>
-            <span className="preview-date">THIS MONTH⌄</span>
-          </div>
-          <div className="preview-stat-grid">
-            {preview.stats.map(([label, value]) => (
-              <div className="preview-stat" key={label}><small>{label}</small><b>{value}</b><i /></div>
-            ))}
-          </div>
-          <div className="preview-lower-grid">
-            <div className="preview-chart">
-              <div className="preview-panel-heading"><b>Activity</b><small>Last 12 months</small></div>
-              <div className="preview-bars">{preview.bars.map((height, index) => <i key={index} style={{ height: `${height}%` }} />)}</div>
-              <div className="preview-months"><span>JAN</span><span>JUN</span><span>DEC</span></div>
-            </div>
-            <div className="preview-activity">
-              <div className="preview-panel-heading"><b>Recent</b><small>VIEW</small></div>
-              {preview.activity.map((item, index) => <div className="preview-activity-row" key={item}><i>{index + 1}</i><span>{item}</span><b>›</b></div>)}
-            </div>
-          </div>
-        </div>
+      <div className="project-preview-image">
+        <Image src={src} alt="" fill sizes="(max-width: 760px) 92vw, 520px" className="project-cover-image" />
+        <span className="project-preview-label">{label}</span>
       </div>
     </div>
   );
@@ -318,7 +269,7 @@ export default function Home() {
                 onClick={() => openGallery(project)}
                 aria-label={`View ${project.title} screenshots`}
               >
-                <ProjectPreview kind={project.preview as PreviewKind} />
+                <ProjectPreview src={project.cover} label={project.previewLabel} />
                 <div className="project-card-top">
                   <div className="project-top-inner">
                     <span className="project-number">{project.number}</span>
