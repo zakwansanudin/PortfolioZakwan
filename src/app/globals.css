@@ -1263,7 +1263,10 @@ body::after {
   background: repeating-linear-gradient(to bottom, rgba(10, 6, 18, .045) 0 1px, transparent 1px 5px);
 }
 .site-header { background: rgba(30, 19, 53, .97); }
-.wordmark { font-size: 13px; text-shadow: 2px 2px #100a1d; }
+.wordmark { font-size: 18px; text-shadow: 2px 2px #100a1d; }
+.arcade-hud small, .arcade-hud b { font-size: 11px; line-height: 1.6; }
+.main-nav a { font-size: 11px; padding: 8px 13px; }
+.header-contact { font-size: 11px; padding: 11px 17px; }
 .arcade-hud b { color: var(--accent); }
 .arcade-hud .hud-lives b { color: var(--orange); }
 .main-nav a:hover { background: #362451; }
