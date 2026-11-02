@@ -380,7 +380,7 @@ export default function Home() {
           <section className="contact-section" id="contact">
             <div>
               <span className="section-kicker">Have a project in mind?</span>
-              <h2>Let&rsquo;s make something .</h2>
+              <h2>Let&rsquo;s make something useful.</h2>
               <p>
                 I&rsquo;m always open to a thoughtful conversation about a new
                 idea or collaboration.
