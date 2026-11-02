@@ -33,7 +33,7 @@ const projects = [
     title: "ePDK School Management",
     type: "Education · In use",
     description:
-      "A student progress portal for the Program Didik Kasih, used across primary schools in Selangor for tracking grades and reporting.",
+      "student progress portal for the Program Didik Kasih, used across primary schools in Selangor for tracking grades and reporting.",
     tags: ["Laravel", "Tailwind CSS", "MySQL"],
     href: "https://epdk.eptrs.my/login",
     preview: "school",
