@@ -1,5 +1,8 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Code2, Database, Mail, Server, Smartphone } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Code2, Database, Mail, Server, Smartphone, X } from "lucide-react";
 
 const skills = [
   { title: "Frontend", icon: Code2, items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
@@ -11,13 +14,19 @@ const skills = [
 const projects = [
   {
     number: "01",
-    title: "KampungOnline",
-    type: "Community platform",
+    title: "Content Management System",
+    type: "Website & content platform",
     description:
-      "A digital community management system with real-time announcements, access controls, and tools for keeping local networks connected.",
+      "A central platform for managing website pages, services, members, and contact information from one clear dashboard.",
     tags: ["Laravel", "MySQL", "Bootstrap"],
-    href: "https://kampungonline.my",
-    preview: "community",
+    preview: "cms",
+    gallery: [
+      { src: "/images/projects/cms/dashboard_cms.png", label: "CMS dashboard" },
+      { src: "/images/projects/cms/homepage.png", label: "Homepage management" },
+      { src: "/images/projects/cms/services.png", label: "Services management" },
+      { src: "/images/projects/cms/members.png", label: "Members management" },
+      { src: "/images/projects/cms/contact.png", label: "Contact information" },
+    ],
   },
   {
     number: "02",
@@ -28,30 +37,38 @@ const projects = [
     tags: ["Laravel", "Tailwind CSS", "MySQL"],
     href: "https://epdk.eptrs.my/login",
     preview: "school",
+    gallery: [
+      { src: "/images/projects/epdk/dashboard.png", label: "ePDK dashboard" },
+      { src: "/images/projects/epdk/student.png", label: "Student progress" },
+      { src: "/images/projects/epdk/login.png", label: "ePDK login" },
+    ],
   },
   {
     number: "03",
-    title: "E-Learning Arena",
-    type: "Learning platform",
+    title: "KampungOnline",
+    type: "Community platform",
     description:
-      "An interactive learning hub with live quiz sessions, dynamic timetables, and dashboards for monitoring student progress.",
-    tags: ["Laravel", "React", "MySQL"],
-    href: "https://example.com",
-    preview: "learning",
-  },
-  {
-    number: "04",
-    title: "HomeTutor CSR Portal",
-    type: "Campaign website",
-    description:
-      "A lightweight landing page that helps families learn about an education initiative and sign up to take part.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    href: "https://example.com",
-    preview: "tutor",
+      "A digital community platform with resident services, local updates, and separate dashboards for community leaders and villagers.",
+    tags: ["Laravel", "MySQL", "Bootstrap"],
+    href: "https://kampungonline.my",
+    preview: "community",
+    gallery: [
+      { src: "/images/projects/kampungonline/landing.png", label: "KampungOnline landing page" },
+      { src: "/images/projects/kampungonline/login.png", label: "KampungOnline login" },
+      { src: "/images/projects/kampungonline/dashboard_villagers.png", label: "Villager dashboard" },
+      { src: "/images/projects/kampungonline/dashboard_ketua.png", label: "Community leader dashboard" },
+    ],
   },
 ];
 
 const previewContent = {
+  cms: {
+    name: "CONTENT CMS",
+    section: "Website overview",
+    stats: [["Pages", "24"], ["Services", "08"], ["Members", "56"]],
+    activity: ["Homepage content", "Service details", "Member directory"],
+    bars: [36, 56, 44, 78, 58, 88, 68, 100, 76, 91, 65, 82],
+  },
   community: {
     name: "KAMPUNG ONLINE",
     section: "Community overview",
@@ -66,23 +83,10 @@ const previewContent = {
     activity: ["Bahasa Melayu", "Mathematics", "Science"],
     bars: [58, 66, 72, 61, 83, 74, 92, 78, 88, 69, 98, 82],
   },
-  learning: {
-    name: "LEARNING ARENA",
-    section: "Quiz arena",
-    stats: [["Players", "128"], ["Quizzes", "24"], ["Completion", "89%"]],
-    activity: ["Science · Round 4", "History · Round 2", "English · Round 1"],
-    bars: [44, 73, 52, 91, 67, 82, 60, 100, 72, 88, 55, 80],
-  },
-  tutor: {
-    name: "HOMETUTOR",
-    section: "Learning together",
-    stats: [["Learners", "320"], ["Tutors", "46"], ["Sessions", "84"]],
-    activity: ["Find a tutor", "Join a class", "How it works"],
-    bars: [55, 70, 62, 86, 73, 94, 80, 100, 75, 88, 67, 93],
-  },
 };
 
 type PreviewKind = keyof typeof previewContent;
+type Project = (typeof projects)[number];
 
 function ProjectPreview({ kind }: { kind: PreviewKind }) {
   const preview = previewContent[kind];
@@ -128,6 +132,58 @@ function ProjectPreview({ kind }: { kind: PreviewKind }) {
 }
 
 export default function Home() {
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [activeImage, setActiveImage] = useState(0);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  function openGallery(project: Project) {
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    setActiveImage(0);
+    setActiveProject(project);
+  }
+
+  useEffect(() => {
+    if (!activeProject) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setActiveProject(null);
+      if (event.key === "ArrowRight") {
+        setActiveImage((index) => (index + 1) % activeProject.gallery.length);
+      }
+      if (event.key === "ArrowLeft") {
+        setActiveImage((index) => (index - 1 + activeProject.gallery.length) % activeProject.gallery.length);
+      }
+      if (event.key === "Tab") {
+        const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href]'
+        );
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocusRef.current?.focus();
+    };
+  }, [activeProject]);
+
   return (
     <div className="portfolio-page">
       {/* Fixed scroll-progress line */}
@@ -145,7 +201,7 @@ export default function Home() {
           </a>
           <div className="arcade-hud" aria-label="Arcade status">
             <span><small>SCORE</small><b>000000</b></span>
-            <span><small>LEVEL</small><b>01 / 04</b></span>
+            <span><small>LEVEL</small><b>01 / 03</b></span>
             <span className="hud-lives"><small>LIVES</small><b aria-label="three lives">♥ ♥ ♥</b></span>
           </div>
           <nav className="main-nav" aria-label="Main navigation">
@@ -254,7 +310,13 @@ export default function Home() {
 
           <div className="project-list">
             {projects.map((project) => (
-              <article className="project-row" key={project.number}>
+              <button
+                className="project-row"
+                key={project.number}
+                type="button"
+                onClick={() => openGallery(project)}
+                aria-label={`View ${project.title} screenshots`}
+              >
                 <ProjectPreview kind={project.preview as PreviewKind} />
                 <div className="project-card-top">
                   <div className="project-top-inner">
@@ -268,15 +330,7 @@ export default function Home() {
                       <p className="project-type">{project.type}</p>
                       <h3>{project.title}</h3>
                     </div>
-                    <a
-                      className="project-link"
-                      href={project.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`Visit ${project.title}`}
-                    >
-                      <ArrowUpRight size={18} />
-                    </a>
+                    <span className="project-link" aria-hidden="true"><ArrowRight size={18} /></span>
                   </div>
                   <p className="project-description">{project.description}</p>
                   <div className="tag-list">
@@ -284,8 +338,9 @@ export default function Home() {
                       <span key={tag}>{tag}</span>
                     ))}
                   </div>
+                  <span className="gallery-action">VIEW SCREENSHOTS <ArrowRight size={13} /></span>
                 </div>
-              </article>
+              </button>
             ))}
           </div>
         </section>
@@ -341,6 +396,84 @@ export default function Home() {
           </section>
         </div>
       </main>
+
+      {activeProject && (
+        <div className="gallery-backdrop" onClick={() => setActiveProject(null)}>
+          <div
+            className="gallery-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gallery-title"
+            ref={modalRef}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="gallery-modal-header">
+              <div>
+                <span className="gallery-overline">PROJECT SCREENSHOTS</span>
+                <h2 id="gallery-title">{activeProject.title}</h2>
+              </div>
+              <button
+                className="gallery-close"
+                ref={closeButtonRef}
+                type="button"
+                onClick={() => setActiveProject(null)}
+                aria-label="Close project gallery"
+              ><X size={20} /></button>
+            </div>
+
+            <div className="gallery-stage">
+              <button
+                className="gallery-arrow gallery-arrow-left"
+                type="button"
+                onClick={() => setActiveImage((index) => (index - 1 + activeProject.gallery.length) % activeProject.gallery.length)}
+                aria-label="Previous screenshot"
+              ><ChevronLeft size={22} /></button>
+              <div className="gallery-image-frame">
+                <Image
+                  src={activeProject.gallery[activeImage].src}
+                  alt={`${activeProject.title}: ${activeProject.gallery[activeImage].label}`}
+                  fill
+                  sizes="(max-width: 760px) 94vw, 1000px"
+                  className="gallery-image"
+                  priority
+                />
+              </div>
+              <button
+                className="gallery-arrow gallery-arrow-right"
+                type="button"
+                onClick={() => setActiveImage((index) => (index + 1) % activeProject.gallery.length)}
+                aria-label="Next screenshot"
+              ><ChevronRight size={22} /></button>
+            </div>
+
+            <div className="gallery-controls">
+              <div className="gallery-caption">
+                <span>{activeProject.gallery[activeImage].label}</span>
+                <small>{String(activeImage + 1).padStart(2, "0")} / {String(activeProject.gallery.length).padStart(2, "0")}</small>
+              </div>
+              <div className="gallery-thumbnails" aria-label="Choose screenshot">
+                {activeProject.gallery.map((image, index) => (
+                  <button
+                    className={`gallery-thumbnail${index === activeImage ? " is-active" : ""}`}
+                    key={image.src}
+                    type="button"
+                    onClick={() => setActiveImage(index)}
+                    aria-label={`Show ${image.label}`}
+                    aria-current={index === activeImage ? "true" : undefined}
+                  >
+                    <Image src={image.src} alt="" fill sizes="96px" />
+                  </button>
+                ))}
+              </div>
+              {activeProject.href && (
+                <a className="gallery-live-link" href={activeProject.href} target="_blank" rel="noreferrer">
+                  OPEN LIVE PROJECT <ArrowUpRight size={14} />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Footer ─────────────────────────────────────────── */}
       <footer className="site-footer">
